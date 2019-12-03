@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container-fluid">
 	<div style="text-align:center">
 		<h1>
 			{{ title }}!
@@ -7,18 +7,20 @@
 	</div>
 	<br/>
 	<div class="row">
-		<div class="card span4" *ngFor="let item of items | async">
-			<div class="card-header h5">
-				Strategy Id: {{item.key}}
-			</div>
-			<div class="card-body">
-				<span class="card-text">
-					<p *ngFor="let objArrayElement of generateArray(item)">
-						<ng-container *ngIf="objArrayElement.key != 'key' && objArrayElement.key != 'timestamp'">
-							{{objArrayElement.key}}:  {{objArrayElement.value}}
-						</ng-container>
-					</p>
-				</span>
+	<div class="col-4 p-3" *ngFor="let item of items | async">
+			<div class="card">
+				<div class="card-header h5">
+					Strategy Id: {{item.key}}
+				</div>
+				<div class="card-body">
+					<span class="card-text">
+						<p *ngFor="let objArrayElement of generateArray(item)">
+							<ng-container *ngIf="objArrayElement.key != 'key' && objArrayElement.key != 'timestamp'">
+								{{objArrayElement.key}}:  {{objArrayElement.value}}
+							</ng-container>
+						</p>
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
