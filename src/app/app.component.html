@@ -10,13 +10,13 @@
 
 	<div class="col-4 p-3" *ngFor="let item of items | async">
 			<div class="card">
-				<div class="card-header h5">
-					Item Key: {{item.key}}
+				<div class="card-header h5" *ngIf="item.name">
+					{{item.name}}
 				</div>
 				<div class="card-body">
 					<span class="card-text">
 						<p *ngFor="let objArrayElement of generateArray(item)">
-							<ng-container *ngIf="objArrayElement.key != 'key' && objArrayElement.key != 'timestamp'">
+							<ng-container *ngIf="objArrayElement.key != 'key' && objArrayElement.key != 'timestamp'  && objArrayElement.key != 'name' ">
 								{{objArrayElement.key}}:  {{objArrayElement.value}}
 							</ng-container>
 						</p>
