@@ -7,10 +7,11 @@
 	</div>
 	<br/>
 	<div class="row">
+
 	<div class="col-4 p-3" *ngFor="let item of items | async">
 			<div class="card">
 				<div class="card-header h5">
-					Strategy Id: {{item.key}}
+					Item Key: {{item.key}}
 				</div>
 				<div class="card-body">
 					<span class="card-text">
@@ -20,9 +21,24 @@
 							</ng-container>
 						</p>
 					</span>
+					<div class="row">
+					<div class="col-6" [hidden]="hasLivefeed(item.key)">
+						<button type="button" class="btn btn-outline-success btn-sm" (click)="startLiveFeed(item.key)">Live Feed</button>
+					</div>
+					<div class="col-6" [hidden]="!hasLivefeed(item.key)">
+						<button type="button" class="btn btn-outline-danger btn-sm" (click)="stopLiveFeed(item.key)">Stop Feed</button>
+					</div>
+					<div class="col-6">
+						<button type="button" class="btn btn-outline-primary btn-sm float-right" (click)="getSnapshot(item.key)">Snapshot</button>
+					</div>
+					</div>
+				</div>
+				<div class="card-footer text-muted" *ngIf="item.timestamp">
+					Updated at: {{item.timestamp.seconds * 1000 | date:'dd/MM/yy HH:mm:ss'}}
 				</div>
 			</div>
 		</div>
 	</div>
+	
 </div>
 <router-outlet></router-outlet>
