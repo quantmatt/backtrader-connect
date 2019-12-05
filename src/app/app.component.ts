@@ -36,12 +36,14 @@ export class AppComponent {
 	isLive = new Map<string, string>();
 	
 	title = 'Backtrader Connect';
+	request_collection = 'strategy_requests';
+	status_collection = 'strategy_status';
 	
 	constructor(db: AngularFirestore) {
 	
-		this.items = db.collection('strategy_status').valueChanges({ idField: 'key' });
-		this.livefeeds = db.collection('strategy_requests', ref => ref.where('request_type', '==', 'subscription')).valueChanges({ idField: 'key' });
-		this.requestCollectionRef = db.collection<RequestItem>('strategy_requests');
+		this.items = db.collection(this.status_collection).valueChanges({ idField: 'key' });
+		this.livefeeds = db.collection(this.request_collection, ref => ref.where('request_type', '==', 'subscription')).valueChanges({ idField: 'key' });
+		this.requestCollectionRef = db.collection<RequestItem>(this.request_collection);
 		
 		
 		let self = this;
@@ -55,13 +57,14 @@ export class AppComponent {
 	
 	
 	generateArray(obj){
-	   return Object.keys(obj).map((key)=>{ return {key:key, value:obj[key]}});
+	   array = Object.keys(obj).map((key)=>{ return {key:key, value:obj[key]}});
+
 	}
 	
 	getSnapshot(key: string) {	
 		this.requestCollectionRef.add({ request_type: 'snapshot',
 																		source: key,
-																		dest_collection: 'strategy_status',
+																		dest_collection: this.status_collection,
 																		dest_key: key,
 																		timestamp: null});
 	}
@@ -91,7 +94,7 @@ export class AppComponent {
 		let now = moment.utc().toDate();
 		this.requestCollectionRef.doc(key).set({ request_type: 'subscription',
 																				source: key,
-																				dest_collection: 'strategy_status',
+																				dest_collection: this.status_collection,
 																				dest_key: key,
 																				timestamp: now});
 	}
